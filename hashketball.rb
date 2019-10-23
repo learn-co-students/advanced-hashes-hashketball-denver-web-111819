@@ -1,3 +1,5 @@
+require 'pry'
+
 def game_hash
   {
     :home => {
@@ -184,20 +186,91 @@ def player_stats(name)
 end
 
 def big_shoe_rebounds
+  size = 0
+  rebounds= 0
   game_hash.each do |place, team_data|
     team_data.each do |attribute, info|
       if attribute == :players
         info.each do |player|
-          if player[:shoe] == player.max_by do |key, value| value[:shoe]
-            return player[:rebounds]
+          if player[:shoe] > size
+            size = player[:shoe]
+            rebounds = player[:rebounds]
           end
         end
       end
     end
   end
+  rebounds
 end
 
+def most_points_scored
+  points = 0 
+  max_player = nil
+  game_hash.each do |place, team_data|
+    team_data.each do |attribute, info|
+      if attribute == :players
+        info.each do |player|
+          if player[:points] > points 
+            points = player[:points]
+            max_player = player[:player_name]
+          end
+        end
+      end
+    end
+  end
+  max_player
+end
 
+def winning_team
+  away_points = 0
+  home_points = 0
+  winner = nil
+  game_hash[:away][:players].each do |player, stat|
+    away_points += player[:points]
+  end
+  game_hash[:home][:players].each do |player, stat|
+    home_points += player[:points]
+  end
+  if away_points > home_points
+    winner = game_hash[:away][:team_name]
+  elsif home_points > away_points
+    winner = game_hash[:home][:team_name]
+  end
+  winner
+end
 
+def player_with_longest_name
+  longest = 0 
+  longest_name = nil
+  game_hash.each do |place, team_data|
+    team_data.each do |attribute, info|
+      if attribute == :players
+        info.each do |player|
+          if player[:player_name].length > longest
+            longest = player[:player_name].length
+            longest_name = player[:player_name]
+          end
+        end
+      end
+    end
+  end
+  longest_name
+end
 
-
+def long_name_steals_a_ton?
+  most_steals = 0
+  most_steals_name = nil
+  game_hash.each do |place, team_data|
+    team_data.each do |attribute, info|
+      if attribute == :players
+        info.each do |player|
+          if player[:steals] > most_steals
+            most_steals = player[:steals]
+            most_steals_name = player[:player_name]
+          end
+        end
+      end
+    end
+  end
+  most_steals_name == player_with_longest_name
+end
