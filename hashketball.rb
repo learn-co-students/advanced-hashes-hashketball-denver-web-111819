@@ -239,5 +239,3 @@ end
 def long_name_steals_a_ton?()
   player_with_longest_name() == player_with_most_steals()
 end  
-  
-  
