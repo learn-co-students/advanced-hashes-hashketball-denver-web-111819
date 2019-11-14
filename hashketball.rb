@@ -277,5 +277,4 @@ def long_name_steals_a_ton?
   false
 end
 
-#pp team_names
-winning_team
+num_points_scored("Jeff Adrien")
